@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <title>Select Acessível</title>
+  </head>
+  <body>
+    <main class="main container">
+      <h1><span lang="en">Select</span> Acessível</h1>
+
+      <div class="combobox--container">
+        <label id="select-label" class="select-label" for="select"
+          >Ordenar por</label
+        >
+        <div
+          aria-controls="option-list"
+          aria-haspopup="listbox"
+          aria-labelledby="select-label"
+          aria-expanded="false"
+          id="select"
+          data-value=""
+          class="combobox"
+          role="combobox"
+          tabindex="0"
+        ></div>
+        <ul
+          class="select--option-list"
+          role="listbox"
+          aria-expanded="false"
+          id="option-list"
+          tabindex="-5"
+        ></ul>
+      </div>
+    </main>
+    <script src="./scripts/select.js"></script>
+  </body>
+</html>
