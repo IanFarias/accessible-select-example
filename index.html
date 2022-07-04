@@ -10,30 +10,40 @@
   </head>
   <body>
     <main class="main container">
-      <h1><span lang="en">Select</span> Acessível</h1>
-
-      <div class="combobox--container">
-        <label id="select-label" class="select-label" for="select"
-          >Ordenar por</label
-        >
-        <div
-          aria-controls="option-list"
-          aria-haspopup="listbox"
-          aria-labelledby="select-label"
-          aria-expanded="false"
-          id="select"
-          data-value=""
-          class="combobox"
-          role="combobox"
-          tabindex="0"
-        ></div>
-        <ul
-          class="select--option-list"
-          role="listbox"
-          aria-expanded="false"
-          id="option-list"
-          tabindex="-5"
-        ></ul>
+      <div>
+        <div class="text-content--container">
+          <h1><span lang="en">Select</span> Acessível</h1>
+          <p>Este é um exemplo de um input select personalizado, acessível para leitores de telas.</p>
+          <p>Foi usado como base o exemplo de combobox da WCAG.</p>
+          <a href="https://w3c.github.io/aria-practices/examples/combobox/combobox-select-only.html" target="_blank">
+            Link para o exemplo da WCAG.
+          </a>
+        </div>
+        <div class="combobox--container">
+          <label id="select-label" class="select-label" for="select"
+            >Ordenar por</label
+          >
+          <div class="combobox-wrapper">
+            <div
+              aria-controls="option-list"
+              aria-haspopup="listbox"
+              aria-labelledby="select-label"
+              aria-expanded="false"
+              id="select"
+              data-value=""
+              class="combobox"
+              role="combobox"
+              tabindex="0"
+            ></div>
+            <ul
+              class="select--option-list"
+              role="listbox"
+              aria-expanded="false"
+              id="option-list"
+              tabindex="-5"
+            ></ul>
+          </div>
+        </div>
       </div>
     </main>
     <script src="./scripts/select.js"></script>
