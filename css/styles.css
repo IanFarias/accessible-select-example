@@ -2,6 +2,13 @@ body {
   background-color: whitesmoke;
 }
 
+body > div  {
+  height: 100%;
+  justify-items: center;
+  align-items: center;
+  display: flex;
+}
+
 .container {
   margin: 0 auto;
   width: 100%;
@@ -9,17 +16,20 @@ body {
 }
 
 .main {
-  height: 80%;
+  height: 95%;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 1px 4px 0px #b8b8b8;
 }
 
 .main > div {
   height: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
 }
 
 .text-content--container a {
@@ -31,6 +41,7 @@ body {
   position: relative;
   display: inline-flex;
   align-items: center;
+  margin-top: 40px;
 }
 
 .select-label {
