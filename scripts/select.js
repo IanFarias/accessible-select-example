@@ -155,6 +155,12 @@ window.addEventListener('load', () => {
         listbox.appendChild(optionCreated)
     })
 
+    const optionsElem = [...document.querySelectorAll('.option')]
+    
+    listbox.addEventListener('mouseover', () => {
+        optionsElem.forEach(option => option.classList.remove('option-focused'))
+    })
+
     selectLabel.addEventListener('click', () => {
         isSelectOpen(select) ? closeSelect(select) : openSelect(select)
     })
