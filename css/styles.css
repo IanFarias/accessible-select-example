@@ -29,6 +29,7 @@ body > div  {
 .main > div {
   height: 50%;
   display: flex;
+  gap: 32px;
   flex-direction: column;
 }
 
@@ -41,7 +42,7 @@ body > div  {
   position: relative;
   display: inline-flex;
   align-items: center;
-  margin-top: 40px;
+
 }
 
 .select-label {

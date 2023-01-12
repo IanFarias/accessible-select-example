@@ -3,7 +3,6 @@ const optionList = ['Relevância', 'Maiores descontos', 'Menor preço', 'Maior p
 
 const BASE_ID = 'option-'
 const OPEN_KEYS = ['ArrowDown', 'ArrowUp', 'Enter', ' ']
-const SELECT_KEYS = ['Enter', ' ', 'Tab']
 const CLOSE_KEYS = ['Escape']
 const NAVIGATION_KEYS = {
     down: 'ArrowDown',
@@ -16,7 +15,6 @@ const select = document.querySelector('#select');
 const selectLabel = document.querySelector('#select-label')
 const listbox = document.querySelector('[role=listbox]');
 
-let ignoreBlur = false
 let selectedOptionId = BASE_ID + 0
 let focusedOption = null
 
@@ -32,10 +30,6 @@ function createOption(optionName, index) {
         setSelectOption(target)
         closeSelect(select)
     })
-
-    option.addEventListener('mousedown', () => {
-        ignoreBlur = true;
-    });
 
     return option
 }
@@ -101,11 +95,8 @@ function handleOpenSelected({key, inputSelect}) {
         return
     }
 
-    if(SELECT_KEYS.includes(key)) {
- 
-        setSelectOption(handleSelectedOption(focusedOption))
-        closeSelect(inputSelect)
-    }
+    setSelectOption(handleSelectedOption(focusedOption))
+    closeSelect(inputSelect)
 }
 
 function handleSelectedOption(id) {
@@ -138,14 +129,6 @@ function handleKeyboardAction(key, target) {
     }
 }
 
-function handleBlur(select) {
-    if(ignoreBlur) {
-        ignoreBlur = false
-        return
-    }
-
-    closeSelect(select)
-}
 
 window.addEventListener('load', () => {
     handleChangeValue(optionList[0])
@@ -173,8 +156,11 @@ window.addEventListener('load', () => {
         handleKeyboardAction(key, target)
     })
     
-    select.addEventListener('blur', ({target}) => {
-        handleBlur(target) 
+    select.addEventListener('blur', (event) => {
+        if(event.relatedTarget && event.relatedTarget.id === 'option-list') {
+            return
+        }
+        closeSelect(event.target) 
     })
 })
 
