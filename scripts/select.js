@@ -18,6 +18,30 @@ const listbox = document.querySelector('[role=listbox]');
 let selectedOptionId = BASE_ID + 0
 let focusedOption = null
 
+
+/*
+ aria-expanded -> utilizado para dizer se o combobox está aberto ou não
+
+ aria-controls="option-list" -> indica que o elemento controla a lista de options
+
+ tabindex = 0 -> para tornar o combobox focavel por tab
+
+ aria-labelledby="select-label" -> para fazer o vinculo com a label do combobox. Ao focar no elemento sera lida a label
+
+ role=combobox -> para indicar para o leitor de telas que o elemento é um combobox
+
+ [ importante! ] aria-activedescendant -> para fazer o controle do foco das options utilizando a navegação por setas.
+ Recebe o Id da option que o usuario está, para avisar o leitor de telas.
+
+ role=listbox -> para indicar para o leitor de telas que se trata de uma lista de options de um combobox
+
+ role=option -> para indicar para o leitor de tela que a <li> é uma option de um combobox
+
+ aria-selected=[boolean] -> para dizer se a option está selecionada ou não
+
+ tabindex= -5 -> utilizado no container das options para não deixar navegar por tab e nem por setas nelas. Deixando esse controle para o combobox.
+*/
+
 function createOption(optionName, index) {
     const option =  document.createElement('li')
     option.id = `${BASE_ID + index}`
@@ -28,7 +52,7 @@ function createOption(optionName, index) {
     
     option.addEventListener('click', ({target}) => {
         setSelectOption(target)
-        closeSelect(select)
+        closeSelect(select, listbox)
     })
 
     return option
@@ -59,14 +83,16 @@ function isSelectOpen(target) {
     return ariaExpanded === 'true' ? true : false
 }
 
-function openSelect(target) {
+function openSelect(target, relatedTarget) {
     target.setAttribute('aria-expanded', 'true')
+    relatedTarget.setAttribute('aria-expanded', 'true')
     focusedOption = 'option-0'
     target.setAttribute('aria-activedescendant', focusedOption);
 }
 
-function closeSelect(target) {
+function closeSelect(target, relatedTarget) {
     target.setAttribute('aria-expanded', 'false')
+    relatedTarget.setAttribute('aria-expanded', 'false')
     focusedOption = 'option-0'
 }
 
@@ -74,7 +100,7 @@ function handleOpenSelected({key, inputSelect}) {
     const currentIndex = parseInt(focusedOption.split('-')[1]) 
 
     if(CLOSE_KEYS.includes(key)) {
-        closeSelect(inputSelect)
+        closeSelect(inputSelect, listbox)
         return
     }
 
@@ -83,7 +109,7 @@ function handleOpenSelected({key, inputSelect}) {
         
         inputSelect.setAttribute('aria-activedescendant', `${BASE_ID + next}`)
         focusedOption = `${BASE_ID + next}`
-        handleFocus(inputSelect.getAttribute('aria-activedescendant'))
+        handleOptionFocus(inputSelect.getAttribute('aria-activedescendant'))
         return
     } 
 
@@ -91,21 +117,21 @@ function handleOpenSelected({key, inputSelect}) {
         const previous = Math.max(0, currentIndex - 1);
         inputSelect.setAttribute('aria-activedescendant', `${BASE_ID + previous}`)
         focusedOption = `${BASE_ID + previous}`
-        handleFocus(inputSelect.getAttribute('aria-activedescendant'))
+        handleOptionFocus(inputSelect.getAttribute('aria-activedescendant'))
         return
     }
 
-    setSelectOption(handleSelectedOption(focusedOption))
-    closeSelect(inputSelect)
+    setSelectOption(getSelectedOption(focusedOption))
+    closeSelect(inputSelect, listbox)
 }
 
-function handleSelectedOption(id) {
+function getSelectedOption(id) {
     const selectedOption = document.querySelector(`#${id}`)
 
     return selectedOption
 }
 
-function handleFocus(id) {
+function handleOptionFocus(id) {
     const previousOption = document.querySelector('li.option-focused')
     const currentOption = document.querySelector(`#${id}`)
 
@@ -118,8 +144,8 @@ function handleFocus(id) {
 
 function handleKeyboardAction(key, target) {
     if(OPEN_KEYS.includes(key) && !isSelectOpen(target)) {
-        openSelect(target)
-        handleFocus(target.getAttribute('aria-activedescendant'))
+        openSelect(target, listbox)
+        handleOptionFocus(target.getAttribute('aria-activedescendant'))
         return
     }
 
@@ -145,11 +171,11 @@ window.addEventListener('load', () => {
     })
 
     selectLabel.addEventListener('click', () => {
-        isSelectOpen(select) ? closeSelect(select) : openSelect(select)
+        isSelectOpen(select) ? closeSelect(select, listbox) : openSelect(select, listbox)
     })
     
     select.addEventListener('click', ({ target }) => {
-        isSelectOpen(target) ? closeSelect(target) : openSelect(target)
+        isSelectOpen(target) ? closeSelect(target, listbox) : openSelect(target, listbox)
     })
     
     select.addEventListener('keydown', ({target, key}) => {
@@ -160,7 +186,7 @@ window.addEventListener('load', () => {
         if(event.relatedTarget && event.relatedTarget.id === 'option-list') {
             return
         }
-        closeSelect(event.target) 
+        closeSelect(event.target, listbox) 
     })
 })
 
